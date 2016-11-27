@@ -1,54 +1,17 @@
 #include <iostream>
 #include <vector>
+#include "Events.h"
 
 using namespace std;
 
-class Event{
 
-public:
-	Event(void(*func)()) :
-		funcPtr(func){
-
-	}
-	void fire(){
-		funcPtr();
-	}
-
-private:
-	void(*funcPtr)();
-};
-
-class Events{
-
-public:
-
-	Event& operator+=(void(*func)()){
-		_events.push_back(func);
-		return _events.back();
-	}
-	Event& operator[](std::size_t idx) {
-		return _events[idx];
-	}
-	const Event& operator[](std::size_t idx) const {
-		return _events[idx];
-	}
-
-	int size(){
-		return _events.size();
-	}
-
-private:
-	vector<Event> _events;
-};
 
 class Button{
 public:
 	Events ClickEvent;
 
 	void click(){
-		for (int i = 0; i < ClickEvent.size(); i++){
-			ClickEvent[i].fire();
-		}
+		ClickEvent.fireEvents();
 	}
 
 };
@@ -64,9 +27,10 @@ int main(){
 
 	Button button;
 	
-	button.ClickEvent += buttonEventFunc;
+	button.ClickEvent += Event(buttonEventFunc, false);
 	button.ClickEvent += buttonEventFunc2;
 
+	button.click();
 	button.click();
 
 	while (1){
