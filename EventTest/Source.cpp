@@ -22,14 +22,8 @@ class Events{
 
 public:
 
-	Events() :
-		_size(0){
-	
-	}
-
 	Event& operator+=(void(*func)()){
 		_events.push_back(func);
-		_size++;
 		return _events.back();
 	}
 	Event& operator[](std::size_t idx) {
@@ -40,11 +34,10 @@ public:
 	}
 
 	int size(){
-		return _size;
+		return _events.size();
 	}
 
 private:
-	int _size;
 	vector<Event> _events;
 };
 
